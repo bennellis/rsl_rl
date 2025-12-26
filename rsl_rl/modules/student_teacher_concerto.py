@@ -43,6 +43,7 @@ class StudentTeacherConcerto(nn.Module):
         normalize_pc: bool = False,
         use_precomputed_embeddings: bool = False,
         dropout: float = 0.1,
+        log_pc_stats_every: int = 0,
         **kwargs: dict[str, Any],
     ) -> None:
         if kwargs:
@@ -84,6 +85,7 @@ class StudentTeacherConcerto(nn.Module):
             pc_grid_size=pc_grid_size,
             normalize_pc=normalize_pc,
             use_precomputed_embeddings=use_precomputed_embeddings,
+            log_pc_stats_every=log_pc_stats_every,
         )
         print(f"Student ConcertoMLP: {self.student}")
 
