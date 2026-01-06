@@ -10,8 +10,9 @@ import time
 import torch
 import warnings
 from tensordict import TensorDict
+from contextlib import nullcontext
 
-from rsl_rl.algorithms import PPO
+from rsl_rl.algorithms import PPO, Distillation
 from rsl_rl.env import VecEnv
 from rsl_rl.modules import (
     ActorCritic,
@@ -81,7 +82,8 @@ class OnPolicyRunner:
         for it in range(start_it, total_it):
             start = time.time()
             # Rollout
-            with torch.inference_mode():
+            rollout_context = torch.no_grad() if isinstance(self.alg, Distillation) else torch.inference_mode()
+            with rollout_context:
                 for _ in range(self.cfg["num_steps_per_env"]):
                     # Sample actions
                     actions = self.alg.act(obs)
